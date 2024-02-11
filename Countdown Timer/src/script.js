@@ -36,41 +36,40 @@
     }
 
     function timer() {
-        if (sec.value > 60) {
-            min.value++;
-            sec.value = parseInt(sec.value) - 59;
+         let hours = parseInt(hour.value) | 0;
+        let minutes = parseInt(min.value) | 0;
+        let seconds = parseInt(sec.value) | 0;
+
+        if (hours === 0 && minutes === 0 && seconds === 0) {
+            stop();
+            return;
         }
 
-        if (min.value > 60) {
-            hour.value++;
-            min.value = parseInt(min.value) - 60;
+        if (seconds > 0) {
+            if (seconds > 60) {
+                minutes++;
+                seconds = seconds - 59;
+            } else {
+                seconds--;
+            }
+        } else if (minutes > 0) {
+            if (minutes > 60) {
+                console.log("min", hours)
+                hours++;
+                minutes = minutes - 59;
+            } else {
+                minutes--;
+                seconds = 59;
+            }
+        } else if (hours > 0) {
+            hours--;
+            minutes = 59;
+            seconds = 59;
         }
 
-        if (hour.value == 0 && min.value == 0 && sec.value == 0) {
-            hour.value = "";
-            min.value = "";
-            sec.value = "";
-            stopInterval();
-
-        } else if (sec.value != 0) {
-            sec.value = `${sec.value <= 10 ? "0" : ""}${sec.value - 1}`
-
-        } else if (min.value != 0 && sec.value == 0) {
-            sec.value = 59;
-            min.value = `${min.value <= 10 ? "0" : ""}${min.value - 1}`
-
-        } else if (hour.value != 0 && sec.value == 0 && min.value == 0) {
-            sec.value = 60;
-            min.value = 60;
-            min.value = `${min.value <= 10 ? "0" : ""}${min.value - 1}`
-            hour.value = `${hour.value <= 10 ? "0" : ""}${hour.value - 1}`
-
-        }
-        else if (hour.value != 0 && sec.value == 0) {
-            sec.value = 60;
-            hour.value = `${hour.value <= 10 ? "0" : ""}${hour.value - 1}`
-
-        }
+        hour.value = hours < 10 ? `0${hours}` : hours;
+        min.value = minutes < 10 ? `0${minutes}` : minutes;
+        sec.value = seconds < 10 ? `0${seconds}` : seconds;
     }
 
     stopBtn.addEventListener("click", () => {
